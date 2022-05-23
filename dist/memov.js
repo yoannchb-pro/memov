@@ -19,17 +19,21 @@ class memov {
 
 
     useMemo(fn) {
-        const cache = [];
+        let cache = [];
         const obj = this;
 
-        return function (...args) {
-        
-            const haveCacheIndex = cache.findIndex(e => 
+        const findCacheIndex = function(args){
+            return cache.findIndex(e => 
                 obj.isEqual(
                     obj.argumentsLength ? e.arguments?.filter((_,i) => i < obj.argumentsLength) : e.arguments, 
                     obj.argumentsLength ? args?.filter((_,i) => i < obj.argumentsLength) : args
                     )
             );
+        }
+
+        const memo = function (...args) {
+        
+            const haveCacheIndex = findCacheIndex(args);
 
             let haveCache = haveCacheIndex !== -1 ? cache[haveCacheIndex] : null;
 
@@ -59,8 +63,20 @@ class memov {
             }
 
             return obj.debug ? Object.assign({ type: "cache" }, haveCache) : haveCache.response;
-
         }
+
+        memo.clearAll = function(){
+            cache = [];
+        }
+
+        memo.clear = function(...args){
+            const index = findCacheIndex(args);
+            if(index !== -1) {
+                cache.splice(index, 1);
+            }
+        }
+
+        return memo;
     }
 }
 

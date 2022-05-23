@@ -1,9 +1,7 @@
 # Memov
 
-<div style="display: flex; align-items: center; margin-top: 1rem; margin-bottom: 1rem;">
-    <img src="./assets/icon.svg" alt="Icon" width="100"/>
-    <p style="margin-left: 1rem">Memoize to cache function results for natif javascript and vuejs.</p>
-</div>
+<img src="./assets/icon.svg" alt="Icon" width="100"/>
+Memoize to cache function results for natif javascript and vuejs.
 
 ## Features
 - Async support
@@ -13,7 +11,11 @@
 - Work with first arguments and don't care about other
 - Define a method to make arguments corresponding
 
-## Installation
+## 🎉 Update
+
+See [CHANGELOG](./CHANGELOG.md)
+
+## 💻 Installation
 
 - To work with object insteadof array import "memov-obj" from dist directory
 
@@ -24,10 +26,10 @@ $ npm i memov
 Try it in the browser
 
 ```html
-<script src="https://unpkg.com/memov@1.0.0/dist/memov.js" type="text/javascript"></script>
+<script src="https://unpkg.com/memov@1.0.5/dist/memov.js" type="text/javascript"></script>
 ```
 
-## Usage
+## 📚 Usage
 
 Simple example
 
@@ -68,16 +70,17 @@ Vue.js
 <template>
     <input type="text" v-model="val1">
     <input type="text" v-model="val2">
-    <button @click="addition">Add</button>
+    <button @click="additionHandler">Add</button>
     <p>Result: {{ result }}</p>
 </template>
 <script>
 import memov from "memov";
 
-const _m = new memov();
+const _m = new memov({ debug: true });
 
 export default {
     name: "MemovTest",
+
     data(){
       return {
         val1: 0,
@@ -87,18 +90,52 @@ export default {
     },
 
     methods: {
-        addition(){
-          (_m.useMemo(() => {
-            this.result = this.val1 + this.val2;
-          }))()
+        addition: _m.useMemo((a, b) => {
+            return a + b;
+        }),
+
+        additionHandler(){
+          this.result = this.addition(this.val1, this.val2)
         }
     }
 }
 </script>
 ```
 
+## Clear cache
+
+Here is how to clear all the cache or only for specifics arguments
+
+```js
+const _m = new memov({ argumentsLength: 2 });
+
+const addition = _m.useMemo(function(a,b){
+    return a + b;
+});
+
+addition.clearAll(); //clear all the cache
+addition.clear(8,8); //clear cache for specifics arguments
+
+addition(8,8);
+addition(8,9);
+addition(9,9);
+addition(8,8,7); //cache hit
+addition(8,9,8,8);; //cache hit
+
+addition.clear(8,8,10);
+
+addition(8,8);
+addition(8,9); //cache hit
+
+addition.clearAll();
+
+//no cache hit for all
+addition(8,8);
+addition(8,9);
+addition(9,9);
+```
+
 ## Configuration
----
 
 **Note:** you can combine all options
 
@@ -225,7 +262,6 @@ _m.debug = false; //disabling the debug mode
 ```
 
 ## Async
----
 
 Working with async have never that easy
 
@@ -254,12 +290,13 @@ await (addition(5,5).response); //cache hit: 10
 ```
 
 ## Test
----
 
 ```
 $ npm run test
 ```
 
 ## Benchmark
+
+Test about working with objects is better or with array ?
 
 <img src="./assets/benchmark.png" alt="Benchmark"/>

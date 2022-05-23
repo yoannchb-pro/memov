@@ -132,6 +132,30 @@ console.log("Done.")
 
 console.log("\n");
 
+console.log("[TEST] Clear cache all");
+isFunctionCall(addition(8,8));
+isFunctionCall(addition(8,9));
+isCache(addition(8,8));
+isCache(addition(8,9));
+addition.clearAll();
+isFunctionCall(addition(8,8));
+isFunctionCall(addition(8,9));
+console.log("Done.")
+
+console.log("\n");
+
+console.log("[TEST] Clear cache arguments");
+isFunctionCall(additionArgs(8,8));
+isFunctionCall(additionArgs(8,9));
+isCache(additionArgs(8,8,7));
+isCache(additionArgs(8,9,8,8));
+additionArgs.clear(8,8,10);
+isFunctionCall(additionArgs(8,8));
+isCache(additionArgs(8,9));
+console.log("Done.")
+
+console.log("\n");
+
 (async function(){
     console.log("[TEST] Async");
     const t1 = await additionAsync(5,5);

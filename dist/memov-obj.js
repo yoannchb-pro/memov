@@ -19,10 +19,10 @@ class memov {
 
 
     useMemo(fn) {
-        const cache = {};
+        let cache = {};
         const obj = this;
 
-        return function (...args) {
+        const memo = function (...args) {
         
             const key = obj.createKey(obj.argumentsLength ? args.splice(0, obj.argumentsLength) : args);
             const hasKey = cache[key];
@@ -56,8 +56,18 @@ class memov {
             }
 
             return obj.debug ? Object.assign({ type: "cache" }, haveCache) : haveCache.response;
-
         }
+
+        memo.clearAll = function(){
+            cache = {};
+        }
+
+        memo.clear = function(...args){
+            const key = obj.createKey(obj.argumentsLength ? args.splice(0, obj.argumentsLength) : args);;
+            if(key in cache) delete cache[key];
+        }
+
+        return memo;
     }
 }
 
