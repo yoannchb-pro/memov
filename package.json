@@ -1,0 +1,38 @@
+{
+  "name": "memov",
+  "version": "1.0.0",
+  "description": "Memoize to cache function results for natif javascript and vuejs",
+  "main": "./dist/memov.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "benchmark": "node ./benchmark/benchmark.js",
+    "test": "node ./test/test.js",
+    "test-obj": "node ./test/test-obj.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yoannchb-pro/memov.git"
+  },
+  "keywords": [
+    "memov",
+    "memoize",
+    "cache",
+    "function",
+    "vuejs",
+    "useMemo",
+    "easy",
+    "fast",
+    "configuration"
+  ],
+  "author": "yoannchb",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yoannchb-pro/memov/issues"
+  },
+  "homepage": "https://github.com/yoannchb-pro/memov#readme",
+  "devDependencies": {
+    "benchmarkify": "^3.0.0"
+  }
+}
